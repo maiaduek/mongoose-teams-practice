@@ -51,6 +51,36 @@ router.post("/create-team", function(req, res) {
         });
 });
 
+router.get("/all-teams", function(req, res) {
+    Team.find().then((results) => {
+        console.log("Found teams!", results);
+        res.render("all-teams", {
+            teams: results,
+        });
+    });
+});
+
+router.post("/create-team", function(req, res) {
+    Team.create({
+            teamName: req.body.teamName,
+            numOfTeammates: req.body.numOfTeammates,
+            color: req.body.color,
+            mascot: req.body.mascot,
+        })
+        .then((results) => {
+            console.log("created team:", results);
+            res.render("create-team", {
+                teamName: results.teamName,
+                numOfTeammates: results.numOfTeammates,
+                color: results.color,
+                mascot: results.mascot,
+            });
+        })
+        .catch((err) => {
+            console.log("There was an error:", err);
+        });
+});
+
 router.get("/create-team", (req, res) => {
     res.render("create-team");
 });
